@@ -59,6 +59,8 @@ Valid properties for the options object are:
 <p>Starting from this node, find all Nodes that match the predicate and return these.</p>
 #### `node.walk(action)`
 <p>Starting from this node, traverse the subtree calling the action for each visited node. The action is a function which receives the visited Node as argument. The traversal can be halted by returning `false` from the action.</p>
+#### `node.compose()`
+<p>Generates a model from the tree, as a sort of serialization. This model can be fed back to `Node tree.parse(model)` to regenerate the tree.</p>
 <br />
 **Note** - `first`, `all` and `walk` can optionally receive as first argument an object with traversal options. Currently the only supported option is the traversal `strategy` which can be any of the following:
 
