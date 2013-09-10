@@ -15,6 +15,7 @@
     this.config = config;
     this.config.childrenPropertyName = config.childrenPropertyName || 'children';
     this.config.modelComparatorFn = config.modelComparatorFn || null;
+    this.config.nodeComparatorFn = mkNodeComparator(config.modelComparatorFn);
   }
 
   TreeModel.prototype.parse = function (model) {
@@ -59,10 +60,11 @@
       this.model[this.config.childrenPropertyName] = [];
     }
     this.model[this.config.childrenPropertyName].push(child.model);
+    this.children.push(child);
     if (this.config.modelComparatorFn) {
       this.model[this.config.childrenPropertyName].sort(this.config.modelComparatorFn);
+      this.children.sort(this.config.nodeComparatorFn);
     }
-    this.children.push(child);
     return child;
   };
 
@@ -76,6 +78,15 @@
     })(this);
     return path;
   };
+
+    /**
+     * Make a node comparator function based on model the given comparator function.
+     */
+    function mkNodeComparator(mFn) {
+	return function(a, b) {
+	    return mFn(a.model, b.model);
+	}
+    }
 
   /**
    * Parse the arguments of traversal functions. These functions can take one optional
